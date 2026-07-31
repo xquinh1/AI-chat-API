@@ -4,6 +4,8 @@ import express from "express";
 import Controller from "./src/controllers/controller.js";
 import Service from "./src/services/service.js";
 import createRoutes from "./src/routes/route.js";
+import logger from "./src/middlewares/logger.js";
+import errorHandle from "./src/middlewares/errorHandle.js";
 
 dotenv.config();
 
@@ -23,7 +25,9 @@ function initializeDependencies() {
 const { controller } = initializeDependencies();
 
 // Routes
+app.use(logger)
 app.use("/", createRoutes(controller));
+app.use(errorHandle)
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

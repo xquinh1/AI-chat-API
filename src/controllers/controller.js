@@ -1,24 +1,33 @@
 class Controller {
     constructor(service) {
         this.service = service;
+        // Ensure methods are bound when passed directly as route handlers
+        this.askGemini = this.askGemini.bind(this);
     }
 
-    askGemini = async (req, res) => {
-        const { prompt } = req.body;
+    static normalizePrompt(value) {
+        if (typeof value !== "string") return null;
+        const trimmed = value.trim();
+        return trimmed.length ? trimmed : null;
+    }
+
+    async askGemini(req, res, next) {
+        const prompt = Controller.normalizePrompt(req.body?.prompt);
 
         if (!prompt) {
             return res.status(400).json({
-                message: "Prompt is required"
-            }) 
+                error: {
+                    code: "INVALID_PROMPT",
+                    message: "prompt is required and must be a non-empty string"
+                }
+            });
         }
 
         try {
             const response = await this.service.askGemini(prompt);
-            res.json({ response });
+            return res.status(200).json({ data: { response } });
         } catch (err) {
-            return res.status(500).json({
-                message: err.message
-            })
+            next(err)
         }
     }
 }
