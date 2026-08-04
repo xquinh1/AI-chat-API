@@ -1,10 +1,7 @@
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { AppLayout } from './layouts/AppLayout'
-import { HomePage } from './pages/HomePage'
+import { ChatPage } from './pages/ChatPage'
 
-function App() {
-  return <AppLayout>
-    <HomePage />
-  </AppLayout>
+export default function App() {
+  return <AppLayout><Routes><Route path="/" element={<ChatPage />} /><Route path="*" element={<Navigate to="/" replace />} /></Routes></AppLayout>
 }
-
-export default App

@@ -1,22 +1,26 @@
-export type Role = 'user' | 'assistant' | 'system'
+export type MessageRole = 'user' | 'assistant'
 
-export interface Message {
+export type MessageStatus = 'complete' | 'streaming' | 'error'
+
+export interface ChatMessage {
   id: string
-  role: Role
+  role: MessageRole
   content: string
-  createdAt: number
+  createdAt: string
+  status: MessageStatus
 }
 
 export interface Conversation {
   id: string
   title: string
-  createdAt: number
-  updatedAt: number
-  messages: Message[]
+  model: string
+  messages: ChatMessage[]
+  createdAt: string
+  updatedAt: string
 }
 
-export interface ModelOption {
-  id: string
-  name: string
-  provider: 'gemini'
+export interface AskGeminiResponse {
+  data: {
+    response: string
+  }
 }
