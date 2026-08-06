@@ -20,20 +20,26 @@ class Service {
         })
 
         try {
-            const response = await this.ai.models.generateContent({
+            const response = await this.ai.models.generateContentStream({
                 model: "gemini-3.5-flash",
                 contents: this.history,
             });
-    
+
+            let text = "";
+
+            for await (const chunk of response) {
+                text += chunk.text || "";
+            }
+            
             this.history.push({
                 role: "model",
                 parts: [
                     {
-                        text: response.text
+                        text: text
                     }
                 ]
             });
-            return response.text;
+            return text;
         } catch (err) {
             this.history.pop()
             throw err

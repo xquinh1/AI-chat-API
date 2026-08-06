@@ -30,6 +30,7 @@ class Controller {
             next(err)
         }
     }
+
 }
 
-export default Controller
+export default Controller;

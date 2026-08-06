@@ -26,6 +26,10 @@ const { controller } = initializeDependencies();
 
 // Routes
 app.use(logger)
+app.get("/test", (req, res) => {
+    console.log("TEST ROUTE");
+    res.send("OK");
+});
 app.use("/", createRoutes(controller));
 app.use(errorHandle)
 
